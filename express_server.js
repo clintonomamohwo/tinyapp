@@ -135,7 +135,7 @@ app.post('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
 
   if (req.session.userID  && req.session.userID === urlDatabase[shortURL].userID) {
-    urlDatabase[shortURL].longURL = req.body.updatedURL;
+    urlDatabase[shortURL].longURL = req.body.editURL;
     res.redirect(`/urls`);
   } else {
     const errorMessage = 'You are not authorized to do that.';
@@ -149,7 +149,8 @@ app.post('/urls/:shortURL', (req, res) => {
 
 app.get("/u/:shortURL", (req, res) => {
   if (urlDatabase[req.params.shortURL]) {
-    res.redirect(urlDatabase[req.params.shortURL].longURL);
+    const longURLL = urlDatabase[req.params.shortURL].longURL;
+    res.redirect(longURLL);
   } else {
     const errorMessage = 'This short URL does not exist.';
     res.status(404).render('urls_error', {user: users[req.session.userID], errorMessage});
